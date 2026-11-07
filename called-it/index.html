@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Called It — The Fine Print</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--panel:#111;--line:#262626;--text:#f2f2f2;--muted:#9a9a9a;--red:#D0021B;--hold:#2fbf71;--open:#e6b800;--miss:#D0021B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding:40px 20px 64px}
+.kicker{font-family:Anton,Impact,sans-serif;letter-spacing:.06em;color:var(--muted);font-size:15px}
+h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:64px;line-height:1;margin:6px 0 4px;letter-spacing:.01em}
+h1 span{color:var(--red)}
+.rule{height:6px;width:260px;background:var(--red);margin:14px 0 18px}
+.lede{font-size:18px;max-width:680px;color:#ddd}
+.rules{font-size:14px;color:var(--muted);max-width:680px;margin-top:10px}
+.tally{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 8px}
+.t{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:120px}
+.t b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:34px;line-height:1}
+.t small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.t.h b{color:var(--hold)} .t.o b{color:var(--open)} .t.m b{color:var(--miss)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 14px}
+.filters button{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:600 13px Inter,sans-serif;cursor:pointer}
+.filters button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.file{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:26px;margin:28px 0 4px;letter-spacing:.02em}
+.file small{font-family:Inter,sans-serif;font-size:13px;color:var(--muted);letter-spacing:0;margin-left:8px}
+.call{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.call.holding{border-left-color:var(--hold)} .call.open{border-left-color:var(--open)} .call.missed{border-left-color:var(--miss)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.claim{font-size:17px;font-weight:600}
+.badge{flex:none;font:700 11px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid currentColor}
+.holding .badge{color:var(--hold)} .open .badge{color:var(--open)} .missed .badge{color:var(--miss)}
+.meta{display:grid;grid-template-columns:120px 1fr;gap:4px 14px;margin-top:12px;font-size:14px}
+.meta dt{color:var(--muted)} .meta dd{margin:0}
+.empty{color:var(--muted);font-size:14px;border:1px dashed var(--line);border-radius:10px;padding:14px 18px}
+footer{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:600px){h1{font-size:46px}.meta{grid-template-columns:1fr}.meta dt{margin-top:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker"><a href="/" style="color:inherit;text-decoration:none">← THE FINE PRINT</a> · WE READ IT SO YOU DON'T HAVE TO</div>
+  <h1>CALLED <span>IT.</span></h1>
+  <div class="rule"></div>
+  <p class="lede">Every call we've made from the documents, with the date we made it and the clause it came from. When news confirms a call or proves it wrong, the status changes, with a date and a source.</p>
+  <p class="rules">The rules: a call counts only if it was published in a video. Each one names the clause it comes from. Misses stay on this page.</p>
+
+  <div class="tally" id="tally"></div>
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+
+  <footer>Last checked: Fri Nov 6, 2026, 9:20 p.m. ET. CBA = the 2020 NFL–NFLPA Collective Bargaining Agreement. Estimates from Over The Cap and Matt Maiocco are credited to them, not counted as our calls. Corrections are posted here and in each video's pinned comment.</footer>
+</div>
+<script>
+const CALLS = [
+ {file:"The Aiyuk File", video:"49ers Want Brandon Aiyuk's Bonus Money. The CBA Has Limits.", date:"Nov 6, 2026",
+  claim:"The 49ers can't claw back Aiyuk's whole $23M signing bonus. The 2024 slice ($4.6M) is off the table because he was on the field that year.",
+  clause:"CBA Art. 4, Sec. 9: forfeiture works one league year of breach at a time",
+  status:"holding", evidence:"Nov 5–6, 2026: Tom Pelissero (The Ringer) and the AP report the amount owed at roughly $13M, far below $23M. No final figure yet."},
+ {file:"The Aiyuk File", video:"49ers Want Brandon Aiyuk's Bonus Money. The CBA Has Limits.", date:"Nov 6, 2026",
+  claim:"His $22.855M option bonus can only be reached for 2025, the league year it was earned.",
+  clause:"CBA Art. 4, Sec. 9(d): option bonuses are forfeitable only for a breach in the year earned",
+  status:"open", evidence:"No ruling or settlement terms reported yet."},
+ {file:"The Aiyuk File", video:"49ers Want Brandon Aiyuk's Bonus Money. The CBA Has Limits.", date:"Nov 6, 2026",
+  claim:"Every league year he stays away puts up to another $4.6M of his signing bonus in play.",
+  clause:"CBA Art. 4, Sec. 9: per league year of breach; $23M prorated $4.6M a year, 2024–2028",
+  status:"open", evidence:"Depends on whether he's reinstated, traded or released. Trade deadline Tue Nov 10, 4 p.m. ET."},
+ {file:"The Aiyuk File", video:"49ers Want Brandon Aiyuk's Bonus Money. The CBA Has Limits.", date:"Nov 6, 2026",
+  claim:"Any fight over the money goes to the System Arbitrator, not a regular court.",
+  clause:"CBA Art. 4, Sec. 9(j); Art. 15",
+  status:"holding", evidence:"Nov 5, 2026: Pelissero reports the NFL Management Council and the NFLPA are working toward a repayment agreement or arbitration."},
+ {file:"The Aiyuk File", video:"49ers Want Brandon Aiyuk's Bonus Money. The CBA Has Limits.", date:"Nov 6, 2026",
+  claim:"Any money the 49ers get back helps their cap the following league year, not this one.",
+  clause:"CBA Art. 13, Sec. 6(b)(iv): credited \"for the next League Year\"",
+  status:"open", evidence:"Nothing has been paid back yet."}
+];
+const LABEL = {holding:"Holding", open:"Open", missed:"Missed"};
+let filter = "all";
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function render(){
+  const n = s => CALLS.filter(c=>c.status===s).length;
+  document.getElementById("tally").innerHTML =
+    `<div class="t"><b>${CALLS.length}</b><small>Calls</small></div>
+     <div class="t h"><b>${n("holding")}</b><small>Holding</small></div>
+     <div class="t o"><b>${n("open")}</b><small>Open</small></div>
+     <div class="t m"><b>${n("missed")}</b><small>Missed</small></div>`;
+  document.getElementById("filters").innerHTML = ["all","holding","open","missed"].map(f=>
+    `<button class="${f===filter?'on':''}" data-f="${f}">${f==="all"?"All":LABEL[f]}</button>`).join("");
+  document.querySelectorAll("#filters button").forEach(b=>b.onclick=()=>{filter=b.dataset.f;render();});
+  const shown = CALLS.filter(c=>filter==="all"||c.status===filter);
+  const files = [...new Set(shown.map(c=>c.file))];
+  let html = "";
+  if(!shown.length){
+    html = `<p class="empty">${filter==="missed"?"No misses yet. When there is one, it goes here first.":"Nothing in this group right now."}</p>`;
+  }
+  files.forEach(f=>{
+    html += `<div class="file">${esc(f)}</div>`;
+    shown.filter(c=>c.file===f).forEach(c=>{
+      html += `<div class="call ${c.status}"><div class="top"><div class="claim">${esc(c.claim)}</div><span class="badge">${LABEL[c.status]}</span></div>
+      <dl class="meta"><dt>Called</dt><dd>${esc(c.date)} · “${esc(c.video)}”</dd>
+      <dt>The clause</dt><dd>${esc(c.clause)}</dd>
+      <dt>Since then</dt><dd>${esc(c.evidence)}</dd></dl></div>`;
+    });
+  });
+  document.getElementById("list").innerHTML = html;
+}
+render();
+</script>
+</body>
+</html>
