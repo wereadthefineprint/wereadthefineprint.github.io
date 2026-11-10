@@ -48,10 +48,22 @@ footer a{color:var(--text)}
   <div class="tally" id="tally"></div>
   <div id="list"></div>
 
-  <footer>Last updated: Mon Nov 9, 2026. Corrections are also posted in each video's pinned comment. The calls we've made from the documents, hits and misses, are on <a href="/called-it/">Called It</a>.</footer>
+  <footer>Last updated: Tue Nov 10, 2026. Corrections are also posted in each video's pinned comment. The calls we've made from the documents, hits and misses, are on <a href="/called-it/">Called It</a>.</footer>
 </div>
 <script>
 const CAUGHT = [
+ {video:"The Season Michael Jordan Went ABSOLUTELY APES#$T", date:"Nov 10, 2026",
+  said:"Players like Giannis Antetokounmpo have won MVP and DPOY in different seasons.",
+  right:"Giannis won MVP and Defensive Player of the Year in the same season, 2019-20. What only Jordan did (1987-88) was win both while also winning the scoring title.",
+  by:"Us", fixed:"Pinned comment and description, Nov 10, 2026"},
+ {video:"The Season Michael Jordan Went ABSOLUTELY APES#$T", date:"Nov 10, 2026",
+  said:"The closest anyone has come was Hakeem Olajuwon, who won DPOY while averaging 27 points per game, still 8 points short of leading the league in scoring.",
+  right:"Hakeem won MVP and DPOY in 1993-94. His 27.3 points a game was 2.5 short of the scoring title (David Robinson, 29.8), not 8.",
+  by:"Us", fixed:"Pinned comment and description, Nov 10, 2026"},
+ {video:"The Season Michael Jordan Went ABSOLUTELY APES#$T", date:"Nov 10, 2026",
+  said:"In 1987-88 he became the first player in NBA history to record 200 steals and 100 blocks in the same season.",
+  right:"Jordan first did it in 1986-87 (236 steals, 125 blocks). In 1987-88 he did it again, with 259 steals and 131 blocks.",
+  by:"Us", fixed:"Pinned comment and description, Nov 10, 2026"},
  {video:"Jauan Jennings Said No To The 49ers. Twice.", date:"Nov 9, 2026",
   said:"On Nov 22, Jennings walks into Levi's Stadium in purple.",
   right:"The game is in Mexico City. The 49ers host the Vikings at Estadio Banorte, Sunday Night Football, Nov 22.",
@@ -62,7 +74,7 @@ const CAUGHT = [
   by:"@roysplace49", fixed:"Pinned comment, Nov 9, 2026"}
 ];
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-const viewers = new Set(CAUGHT.map(c=>c.by)).size;
+const viewers = new Set(CAUGHT.filter(c=>c.by.startsWith("@")).map(c=>c.by)).size;
 document.getElementById("tally").innerHTML =
   `<div class="t f"><b>${CAUGHT.length}</b><small>Corrected</small></div>
    <div class="t"><b>${viewers}</b><small>Viewers credited</small></div>`;
@@ -70,7 +82,7 @@ document.getElementById("list").innerHTML = CAUGHT.map(c=>
   `<div class="item"><div class="top"><div class="vid">“${esc(c.video)}”</div><span class="badge">Fixed</span></div>
    <dl class="meta"><dt>We said</dt><dd class="said">${esc(c.said)}</dd>
    <dt>What's right</dt><dd>${esc(c.right)}</dd>
-   <dt>Caught by</dt><dd class="who">${esc(c.by)} · ${esc(c.date)}</dd>
+   <dt>Caught by</dt><dd class="who">${c.by==="Us"?"We caught it ourselves":esc(c.by)} · ${esc(c.date)}</dd>
    <dt>Fixed in</dt><dd>${esc(c.fixed)}</dd></dl></div>`).join("");
 </script>
 </body>
